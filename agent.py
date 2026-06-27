@@ -64,11 +64,12 @@ STEP 3 — Tournament context
   Extract: current points, GD, what each team needs (must win / draw enough / already through / \
 already eliminated), whether 3rd place advancement is relevant and what points threshold is needed.
 
-STEP 4 — Lineups, injuries & Opta match preview
+STEP 4 — Confirmed lineups, injuries & Opta match preview
   Search A: "site:theanalyst.com [Team A] vs [Team B] preview 2026"  ← Opta preview
-  Search B: "[Team A] vs [Team B] lineup confirmed injuries suspended World Cup 2026"
-  Extract: confirmed or expected starting XI, key absences, rotation risks \
-(teams already qualified often rest players), set piece threats flagged by Opta.
+  Search B: "[Team A] vs [Team B] confirmed lineup starting XI World Cup 2026"  ← confirmed XI
+  Search C: "[Team A] vs [Team B] injuries suspended out World Cup 2026"  ← absences
+  Extract: confirmed starting XI if announced (lineups are released ~1hr before kickoff), \
+key absences, rotation risks (qualified teams rest starters), set piece threats.
 
 STEP 5 — Statistical model
   Run run_statistical_model. The output includes:
@@ -82,14 +83,15 @@ STEP 5 — Statistical model
   best scoreline within the outcome the model actually favours.
 
 STEP 6 — Synthesise and recommend
-  Combine all of the above (Opta stats, form, context, model) into a clear verdict:
-  - Start from recommended_scoreline as your baseline. Adjust up/down based on form, \
-    tactics, lineups, and context — but you need a strong reason to deviate from it.
+  Combine ALL of the above (form, tactics, player stats, lineups, context, model) into a verdict:
+  - Use recommended_scoreline as a reference point from the model, but the final pick must \
+    reflect everything — form, tactics, confirmed lineups, and tournament context. \
+    If the data from all steps genuinely points to 1-1 or any other score, pick it.
   - State the predicted score
-  - State win/draw/loss % and the recommended_scoreline from the model
+  - State win/draw/loss % and recommended_scoreline from the model
   - State confidence (low / medium / high)
   - State 1 alternative scoreline
-  - Explain the key factor driving the pick (form, Opta stats, context, or lineup)
+  - Explain the key factor driving the pick (form, Opta stats, tactics, lineup, or context)
   - Flag if a correct-result-only play is smarter than chasing the exact score
 
 ━━━ KNOCKOUT STAGE SCORING RULE (CRITICAL) ━━━

@@ -164,9 +164,9 @@ MANDATORY ANALYSIS BEFORE EVERY PREDICTION:
 STEP 1 — Team A's WC 2026 form, tactics + player stats: search Opta first ("site:theanalyst.com [Team A] World Cup 2026"), then "[Team A] World Cup 2026 matches goals scorers results", then "[Team A] World Cup 2026 tactics formation pressing how they play". Extract: last 2-3 match scores + goalscorers, key players in form, defensive record, AND tactical patterns (formation, pressing style, defensive shape, attacking tendencies, set piece threat, transitions), suspensions/injuries.
 STEP 2 — Same three searches for Team B. Extract identical detail: results, scorers, key players, defensive record, tactical patterns, suspensions.
 STEP 3 — Search group standings and what each team needs (through / eliminated / 3rd place picture).
-STEP 4 — Search confirmed lineups, injuries, rotation risk (qualified teams rest players).
-STEP 5 — Run run_statistical_model. The output includes win/draw/loss %, top_scorelines (raw ranked list), and recommended_scoreline (top scoreline within the most likely outcome). ALWAYS use recommended_scoreline as your data-driven starting point — not the raw top scoreline, which is inflated by the Dixon-Coles correction for 1-1 and 0-0. Adjust the recommended scoreline based on form, tactics, and context, but you need a strong reason to deviate from it.
-STEP 6 — Give a clear verdict: predicted score, confidence, 1 alternative, key factor, bold vs safe pick.
+STEP 4 — Three searches: (A) "site:theanalyst.com [Team A] vs [Team B] preview 2026", (B) "[Team A] vs [Team B] confirmed lineup starting XI World Cup 2026", (C) "[Team A] vs [Team B] injuries suspended out World Cup 2026". Extract confirmed starting XI if announced (released ~1hr before kickoff), key absences, rotation risk.
+STEP 5 — Run run_statistical_model. The output includes win/draw/loss %, top_scorelines (raw ranked list), and recommended_scoreline (top scoreline within the most likely outcome). Use recommended_scoreline as a model reference point, but the final pick must reflect ALL steps — form, tactics, confirmed lineups, and context. If everything points to 1-1, predict 1-1.
+STEP 6 — Synthesise ALL steps into a verdict: predicted score, win/draw/loss % + recommended_scoreline from model, confidence (low/med/high), 1 alternative, key factor driving the pick, bold vs safe play.
 
 KNOCKOUT STAGE SCORING RULE (CRITICAL):
 Knockout predictions cover the full 120 minutes including extra time — NOT just 90 minutes.
