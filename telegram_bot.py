@@ -18,8 +18,12 @@ log = logging.getLogger(__name__)
 # ── Config ─────────────────────────────────────────────────────────────────────
 TELEGRAM_TOKEN    = os.environ["TELEGRAM_BOT_TOKEN"]
 ANTHROPIC_API_KEY = os.environ["ANTHROPIC_API_KEY"]
+BOT_PASSWORD      = os.environ["BOT_PASSWORD"]
 MODEL      = "claude-sonnet-4-6"
 MAX_TOKENS = 4096
+
+# Authorised user IDs (in memory — persists until bot restarts)
+AUTHORISED: set[int] = set()
 
 # ── Elo ratings (inline so Railway doesn't need the repo subfolder) ────────────
 RATINGS = {
@@ -212,46 +216,76 @@ def run_agent_sync(user_message: str, history: list) -> str:
             history.append({"role": "assistant", "content": response.content})
             return reply
 
+# ── Auth helpers ───────────────────────────────────────────────────────────────
+def is_authorised(user_id: int) -> bool:
+    return user_id in AUTHORISED
+
+async def ask_for_password(update: Update):
+    await update.message.reply_text(
+        "🔒 This bot is private.\nEnter the password to continue:"
+    )
+
 # ── Telegram handlers ──────────────────────────────────────────────────────────
 async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    if not is_authorised(user_id):
+        await ask_for_password(update)
+        return
     context.user_data["history"] = []
     await update.message.reply_text(
         "⚽ WC2026 Prediction Agent ready!\n\n"
         "Ask me to predict any match, e.g.:\n"
         "  predict argentina cape verde\n"
         "  predict england colombia\n\n"
-        "I'll run the full 6-step analysis: form, standings, lineups, Opta stats + statistical model.\n\n"
-        "Type /clear to reset the conversation."
+        "Full 6-step analysis: form, standings, lineups, Opta stats + statistical model.\n\n"
+        "/clear to reset the conversation."
     )
 
 async def cmd_clear(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    if not is_authorised(user_id):
+        await ask_for_password(update)
+        return
     context.user_data["history"] = []
     await update.message.reply_text("Conversation cleared. Ready for the next match!")
 
+
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id  = update.effective_user.id
     user_msg = update.message.text.strip()
     if not user_msg:
+        return
+
+    # ── Password check ─────────────────────────────────────────────────────────
+    if not is_authorised(user_id):
+        if BOT_PASSWORD and user_msg == BOT_PASSWORD:
+            AUTHORISED.add(user_id)
+            context.user_data["history"] = []
+            await update.message.reply_text(
+                "✅ Access granted!\n\n"
+                "⚽ WC2026 Prediction Agent ready. Ask me to predict any match, e.g.:\n"
+                "  predict argentina cape verde"
+            )
+        else:
+            await update.message.reply_text("❌ Wrong password. Try again:")
         return
 
     if "history" not in context.user_data:
         context.user_data["history"] = []
     history = context.user_data["history"]
 
-    # Send immediate feedback so user knows it's working
     thinking = await update.message.reply_text(
-        "⚽ Analysing... (searching form, lineups, running model — ~30 sec)"
+        "⚽ Analysing... (searching Opta + form + lineups + running model — ~30 sec)"
     )
 
-    loop = asyncio.get_event_loop()
     try:
-        reply = await loop.run_in_executor(None, run_agent_sync, user_msg, history)
+        reply = await asyncio.to_thread(run_agent_sync, user_msg, history)
     except Exception as e:
         log.error(f"Agent error: {e}", exc_info=True)
         reply = f"Something went wrong: {e}"
 
     await thinking.delete()
 
-    # Telegram has 4096 char limit per message — split if needed
     if len(reply) <= 4096:
         await update.message.reply_text(reply)
     else:
