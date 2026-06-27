@@ -143,8 +143,8 @@ Always search "site:theanalyst.com [team] World Cup 2026" first.
 Opta has shots, possession, pressing, set pieces, player ratings, match previews.
 
 MANDATORY ANALYSIS BEFORE EVERY PREDICTION:
-STEP 1 — Team A's WC 2026 form + player stats: search Opta first, then "[Team A] World Cup 2026 matches goals scorers results". Extract: last 2-3 match scores, who scored and when, key players in form, defensive record (clean sheets, goals conceded), any suspensions or injuries from WC matches.
-STEP 2 — Same for Team B: match-by-match results, goalscorers, key players performing, defensive vulnerabilities, suspensions.
+STEP 1 — Team A's WC 2026 form, tactics + player stats: search Opta first ("site:theanalyst.com [Team A] World Cup 2026"), then "[Team A] World Cup 2026 matches goals scorers results", then "[Team A] World Cup 2026 tactics formation pressing how they play". Extract: last 2-3 match scores + goalscorers, key players in form, defensive record, AND tactical patterns (formation, pressing style, defensive shape, attacking tendencies, set piece threat, transitions), suspensions/injuries.
+STEP 2 — Same three searches for Team B. Extract identical detail: results, scorers, key players, defensive record, tactical patterns, suspensions.
 STEP 3 — Search group standings and what each team needs (through / eliminated / 3rd place picture).
 STEP 4 — Search confirmed lineups, injuries, rotation risk (qualified teams rest players).
 STEP 5 — Run run_statistical_model. Focus on win/draw/loss % and top scorelines only.
