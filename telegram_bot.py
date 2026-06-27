@@ -150,6 +150,13 @@ STEP 4 — Search confirmed lineups, injuries, rotation risk (qualified teams re
 STEP 5 — Run run_statistical_model. Focus on win/draw/loss % and top scorelines only.
 STEP 6 — Give a clear verdict: predicted score, confidence, 1 alternative, key factor, bold vs safe pick.
 
+KNOCKOUT STAGE SCORING RULE (CRITICAL):
+Knockout predictions are for the 120-MINUTE score (including extra time), NOT 90 minutes.
+- Predict 2-1 and it's 1-1 at 90 min? You can still win if someone scores in extra time.
+- A DRAW prediction (e.g. 1-1) = predicting the game goes to PENALTIES. Only ~15-20% of knockouts reach pens. Almost never predict a draw in knockout rounds unless teams are exceptionally evenly matched.
+- Predicting a WINNER gives you 120 min for the score to land. 1-0, 2-1, 2-0 are more achievable than in group stage. Always lean toward a winner in knockouts.
+- Group stage = 90-minute score only. Draws are normal in group stage.
+
 RULES:
 - NEVER use or mention xG — it is rubbish for individual match predictions.
 - 3rd place CAN advance — always check the advancement picture. Changes how teams play.

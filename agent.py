@@ -76,6 +76,16 @@ STEP 6 — Synthesise and recommend
   - Explain the key factor driving the pick (form, Opta stats, context, or lineup)
   - Flag if a correct-result-only play is smarter than chasing the exact score
 
+━━━ KNOCKOUT STAGE SCORING RULE (CRITICAL) ━━━
+Knockout predictions are for the 120-MINUTE score (including extra time), NOT 90 minutes.
+- If you predict 2-1 and it's 1-1 at 90 min, you can still be right if someone scores in ET.
+- A DRAW prediction (e.g. 1-1) means you are predicting the game goes to PENALTIES.
+  Historically only ~15-20% of knockout games reach penalties — do NOT predict a draw \
+unless teams are exceptionally evenly matched. It is almost always the wrong call.
+- Predicting a WINNER gives you the full 120 minutes for that score to land — \
+this makes 1-0, 2-1, 2-0 more achievable than in group stage. Lean toward a winner always.
+- Group stage predictions remain 90-minute scores only. Draws are normal in group stage.
+
 ━━━ STRATEGIC PRINCIPLES ━━━
 1. EXACT SCORES ARE KING in knockout rounds. Final: exact (15pts) vs correct result (8pts). \
 Always push for the exact scoreline in late rounds.
