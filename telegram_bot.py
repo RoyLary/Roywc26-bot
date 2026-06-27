@@ -83,12 +83,30 @@ def run_statistical_model(team_a: str, team_b: str, home_team: str = "") -> dict
             elif a<b: wb+=p
             else: d+=p
     t = wa+d+wb
+    scores = [(a, b, p/t) for a, b, p in scores]
     scores.sort(key=lambda x: -x[2])
+
+    top_win_a = next(((a,b,p) for a,b,p in scores if a>b), None)
+    top_draw  = next(((a,b,p) for a,b,p in scores if a==b), None)
+    top_win_b = next(((a,b,p) for a,b,p in scores if a<b), None)
+
+    most_likely = max([("win_a", wa/t), ("draw", d/t), ("win_b", wb/t)], key=lambda x: x[1])
+    if most_likely[0] == "win_a" and top_win_a:
+        rec = f"{top_win_a[0]}-{top_win_a[1]} ({round(top_win_a[2]*100,1)}%)"
+    elif most_likely[0] == "win_b" and top_win_b:
+        rec = f"{top_win_b[0]}-{top_win_b[1]} ({round(top_win_b[2]*100,1)}%)"
+    elif top_draw:
+        rec = f"{top_draw[0]}-{top_draw[1]} ({round(top_draw[2]*100,1)}%)"
+    else:
+        rec = f"{scores[0][0]}-{scores[0][1]}"
+
     return {
         "team_a": team_a, "team_b": team_b,
         "elo_a": ra, "elo_b": rb,
         "win_a_pct": round(wa/t*100,1), "draw_pct": round(d/t*100,1), "win_b_pct": round(wb/t*100,1),
-        "top_scorelines": [{"score":f"{a}-{b}","probability_pct":round(p/t*100,1)} for a,b,p in scores[:12]],
+        "top_scorelines": [{"score":f"{a}-{b}","probability_pct":round(p*100,1)} for a,b,p in scores[:12]],
+        "recommended_scoreline": rec,
+        "recommended_note": "Top scoreline within the most likely outcome — use this as the data-driven starting point, not the raw top scoreline.",
         "model_note": "Elo + Dixon-Coles bivariate Poisson (913 calibrated internationals, Jun 2026)",
     }
 
@@ -147,7 +165,7 @@ STEP 1 — Team A's WC 2026 form, tactics + player stats: search Opta first ("si
 STEP 2 — Same three searches for Team B. Extract identical detail: results, scorers, key players, defensive record, tactical patterns, suspensions.
 STEP 3 — Search group standings and what each team needs (through / eliminated / 3rd place picture).
 STEP 4 — Search confirmed lineups, injuries, rotation risk (qualified teams rest players).
-STEP 5 — Run run_statistical_model. Focus on win/draw/loss % and top scorelines only.
+STEP 5 — Run run_statistical_model. The output includes win/draw/loss %, top_scorelines (raw ranked list), and recommended_scoreline (top scoreline within the most likely outcome). ALWAYS use recommended_scoreline as your data-driven starting point — not the raw top scoreline, which is inflated by the Dixon-Coles correction for 1-1 and 0-0. Adjust the recommended scoreline based on form, tactics, and context, but you need a strong reason to deviate from it.
 STEP 6 — Give a clear verdict: predicted score, confidence, 1 alternative, key factor, bold vs safe pick.
 
 KNOCKOUT STAGE SCORING RULE (CRITICAL):

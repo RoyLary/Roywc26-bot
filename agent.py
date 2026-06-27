@@ -71,13 +71,22 @@ STEP 4 — Lineups, injuries & Opta match preview
 (teams already qualified often rest players), set piece threats flagged by Opta.
 
 STEP 5 — Statistical model
-  Run run_statistical_model to get win/draw/loss probabilities and the top scoreline distribution.
-  NOTE: Do NOT mention or use expected goals (xG) — treat that output as irrelevant. \
-Focus only on win/draw/loss % and the ranked scoreline probabilities.
+  Run run_statistical_model. The output includes:
+  - win/draw/loss % — the overall probability of each outcome
+  - top_scorelines — all scorelines ranked by raw probability (NOTE: can be misleading, \
+    see below)
+  - recommended_scoreline — the top scoreline WITHIN the most likely outcome. \
+    THIS is your data-driven starting point. Always use this, not the raw top scoreline.
+  WHY: The Dixon-Coles model inflates 1-1 and 0-0, making them appear top of the raw list \
+  even when draw% is only 20%. The recommended_scoreline corrects for this by finding the \
+  best scoreline within the outcome the model actually favours.
 
 STEP 6 — Synthesise and recommend
   Combine all of the above (Opta stats, form, context, model) into a clear verdict:
+  - Start from recommended_scoreline as your baseline. Adjust up/down based on form, \
+    tactics, lineups, and context — but you need a strong reason to deviate from it.
   - State the predicted score
+  - State win/draw/loss % and the recommended_scoreline from the model
   - State confidence (low / medium / high)
   - State 1 alternative scoreline
   - Explain the key factor driving the pick (form, Opta stats, context, or lineup)
@@ -194,6 +203,22 @@ def run_statistical_model(team_a: str, team_b: str, home_team: str = "") -> dict
         for a, b, p in scorelines[:12]
     ]
 
+    # Top scoreline within each outcome separately
+    top_win_a = next(((a, b, p) for a, b, p in scorelines if a > b), None)
+    top_draw  = next(((a, b, p) for a, b, p in scorelines if a == b), None)
+    top_win_b = next(((a, b, p) for a, b, p in scorelines if a < b), None)
+
+    # Recommended = top scoreline within the most likely outcome
+    most_likely = max([("win_a", win_a), ("draw", draw), ("win_b", win_b)], key=lambda x: x[1])
+    if most_likely[0] == "win_a" and top_win_a:
+        rec = f"{top_win_a[0]}-{top_win_a[1]} ({round(top_win_a[2]*100,1)}%)"
+    elif most_likely[0] == "win_b" and top_win_b:
+        rec = f"{top_win_b[0]}-{top_win_b[1]} ({round(top_win_b[2]*100,1)}%)"
+    elif top_draw:
+        rec = f"{top_draw[0]}-{top_draw[1]} ({round(top_draw[2]*100,1)}%)"
+    else:
+        rec = top[0]["score"]
+
     return {
         "team_a": team_a,
         "team_b": team_b,
@@ -204,6 +229,8 @@ def run_statistical_model(team_a: str, team_b: str, home_team: str = "") -> dict
         "draw_pct":  round(draw  * 100, 1),
         "win_b_pct": round(win_b * 100, 1),
         "top_scorelines": top,
+        "recommended_scoreline": rec,
+        "recommended_note": "Top scoreline within the most likely outcome (win/draw/loss) — use this as the model's data-driven starting point, not the raw top scoreline which can be inflated by the Dixon-Coles correction.",
         "model_note": "Elo + Dixon-Coles bivariate Poisson (calibrated on 913 internationals, Jun 2026)",
     }
 
