@@ -43,14 +43,21 @@ intensity, set piece threat, player ratings, head-to-head records, and pre-match
 ━━━ MANDATORY PRE-MATCH ANALYSIS — DO THIS BEFORE EVERY PREDICTION ━━━
 You MUST run all of the following steps in order before giving any score prediction:
 
-STEP 1 — Team A's World Cup form + Opta stats
-  Search A: "site:theanalyst.com [Team A] World Cup 2026"  ← Opta match preview/stats first
-  Search B: "[Team A] World Cup 2026 results matches performance"  ← backup if Opta misses
-  Extract: last 2-3 WC matches, actual scores, how they played, who scored, defensive \
-solidity, shots conceded, pressing metrics, any red cards or suspensions carried over.
+STEP 1 — Team A's World Cup form, tactics + player stats
+  Search A: "site:theanalyst.com [Team A] World Cup 2026"  ← Opta match stats/preview
+  Search B: "[Team A] World Cup 2026 matches goals scorers results"  ← match-by-match results
+  Search C: "[Team A] World Cup 2026 tactics formation pressing how they play"  ← tactical shape
+  Extract ALL of the following:
+  - Last 2-3 WC 2026 matches: exact scores, who scored, which minute, how they conceded
+  - Key players in form: top scorers, assist makers, player driving attacks
+  - Defensive record: clean sheets, goals conceded, how vulnerable at the back
+  - Tactical patterns: formation used, pressing intensity, defensive shape, how they attack \
+(through wide areas, through the middle, set pieces), how they transition defence-to-attack
+  - Any red cards, suspensions, or key injuries from WC matches
 
-STEP 2 — Team B's World Cup form + Opta stats
-  Same two searches for Team B (Opta first, generic backup).
+STEP 2 — Team B's World Cup form, tactics + player stats
+  Same three searches for Team B. Extract the same detail: match scores, goalscorers, \
+  key players in form, defensive record, suspensions, and tactical patterns.
 
 STEP 3 — Tournament context
   Search: "[Group X] World Cup 2026 standings table"
@@ -77,15 +84,10 @@ STEP 6 — Synthesise and recommend
   - Flag if a correct-result-only play is smarter than chasing the exact score
 
 ━━━ KNOCKOUT STAGE SCORING RULE (CRITICAL) ━━━
-Knockout predictions are for the 120-MINUTE score (including extra time), NOT 90 minutes.
-- If you predict 2-1 and it's 1-1 at 90 min, you can still be right if someone scores in ET.
-- If the data suggests a draw at 90 min, DO NOT stop there. You must reason through extra time: \
-will one team find a winner in ET, or will it stay level (= penalties)? \
-Give the 120-min prediction explicitly — either a winner's scoreline or the draw scoreline if \
-you genuinely believe it goes to penalties.
-- A draw prediction (e.g. 1-1) is valid when the data supports it — it means you believe \
-the game ends in penalties. But always explain the ET reasoning.
-- Group stage predictions remain 90-minute scores only. Draws are normal in group stage.
+Knockout predictions cover the full 120 minutes including extra time — NOT just 90 minutes. \
+A draw prediction (e.g. 1-1) means the game goes to penalties. \
+Let the data drive the pick — do not artificially avoid draws, but do not default to them either. \
+Group stage predictions are 90-minute scores only.
 
 ━━━ STRATEGIC PRINCIPLES ━━━
 1. EXACT SCORES ARE KING in knockout rounds. Final: exact (15pts) vs correct result (8pts). \
