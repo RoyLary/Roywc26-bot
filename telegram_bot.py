@@ -5,12 +5,11 @@ Runs 24/7 on Railway (free) — chat from your phone, PC can be off.
 Same agent as agent.py: Elo + Dixon-Coles model, 6-step analysis, Opta-first search.
 """
 
-import asyncio, json, logging, math, os
+import asyncio, json, logging, math, os, requests
 from pathlib import Path
 from telegram import Update
 from telegram.ext import Application, MessageHandler, CommandHandler, filters, ContextTypes
 import anthropic
-from duckduckgo_search import DDGS
 
 logging.basicConfig(format="%(asctime)s %(levelname)s %(message)s", level=logging.INFO)
 log = logging.getLogger(__name__)
@@ -93,13 +92,23 @@ def run_statistical_model(team_a: str, team_b: str, home_team: str = "") -> dict
         "model_note": "Elo + Dixon-Coles bivariate Poisson (913 calibrated internationals, Jun 2026)",
     }
 
+TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY", "")
+
 def search_web(query: str) -> str:
     log.info(f"  [Search] {query}")
+    if not TAVILY_API_KEY:
+        return "Search unavailable (TAVILY_API_KEY not set)"
     try:
-        with DDGS() as ddgs:
-            results = list(ddgs.text(query, max_results=6))
-        if not results: return "No results."
-        return "\n\n".join(f"### {r.get('title','')}\n{r.get('body','')}" for r in results)
+        r = requests.post(
+            "https://api.tavily.com/search",
+            json={"api_key": TAVILY_API_KEY, "query": query, "max_results": 6, "search_depth": "basic"},
+            timeout=20,
+        )
+        data = r.json()
+        results = data.get("results", [])
+        if not results:
+            return "No results found."
+        return "\n\n".join(f"{r.get('title','')}\n{r.get('content','')}" for r in results)
     except Exception as e:
         return f"Search error: {e}"
 
@@ -301,6 +310,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ── Main ───────────────────────────────────────────────────────────────────────
 def main():
     log.info("Starting WC2026 Telegram bot...")
+    log.info(f"BOT_PASSWORD set: {bool(BOT_PASSWORD)} | value: '{BOT_PASSWORD}'")
     app = Application.builder().token(TELEGRAM_TOKEN).build()
     app.add_handler(CommandHandler("start", cmd_start))
     app.add_handler(CommandHandler("clear", cmd_clear))
