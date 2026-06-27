@@ -153,8 +153,8 @@ STEP 6 — Give a clear verdict: predicted score, confidence, 1 alternative, key
 KNOCKOUT STAGE SCORING RULE (CRITICAL):
 Knockout predictions are for the 120-MINUTE score (including extra time), NOT 90 minutes.
 - Predict 2-1 and it's 1-1 at 90 min? You can still win if someone scores in extra time.
-- A DRAW prediction (e.g. 1-1) = predicting the game goes to PENALTIES. Only ~15-20% of knockouts reach pens. Almost never predict a draw in knockout rounds unless teams are exceptionally evenly matched.
-- Predicting a WINNER gives you 120 min for the score to land. 1-0, 2-1, 2-0 are more achievable than in group stage. Always lean toward a winner in knockouts.
+- If the data suggests a draw at 90 min, DO NOT stop there. Reason through extra time: will one team find a winner in ET, or does it stay level (= penalties)? Always give the 120-min prediction explicitly.
+- A draw prediction is valid if the data supports it — it means you believe it goes to penalties. But always explain the extra time reasoning.
 - Group stage = 90-minute score only. Draws are normal in group stage.
 
 RULES:
