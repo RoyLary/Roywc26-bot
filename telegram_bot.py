@@ -119,7 +119,7 @@ def search_web(query: str) -> str:
     try:
         r = requests.post(
             "https://api.tavily.com/search",
-            json={"api_key": TAVILY_API_KEY, "query": query, "max_results": 4, "search_depth": "basic"},
+            json={"api_key": TAVILY_API_KEY, "query": query, "max_results": 3, "search_depth": "basic"},
             timeout=20,
         )
         data = r.json()
@@ -161,10 +161,10 @@ Always search "site:theanalyst.com [team] World Cup 2026" first.
 Opta has shots, possession, pressing, set pieces, player ratings, match previews.
 
 MANDATORY ANALYSIS BEFORE EVERY PREDICTION:
-STEP 1 — Team A's WC 2026 form, tactics + player stats: search Opta first ("site:theanalyst.com [Team A] World Cup 2026"), then "[Team A] World Cup 2026 matches goals scorers results", then "[Team A] World Cup 2026 tactics formation pressing how they play". Extract: last 2-3 match scores + goalscorers, key players in form, defensive record, AND tactical patterns (formation, pressing style, defensive shape, attacking tendencies, set piece threat, transitions), suspensions/injuries.
-STEP 2 — Same three searches for Team B. Extract identical detail: results, scorers, key players, defensive record, tactical patterns, suspensions.
-STEP 3 — Search group standings and what each team needs (through / eliminated / 3rd place picture).
-STEP 4 — Three searches: (A) "site:theanalyst.com [Team A] vs [Team B] preview 2026", (B) "[Team A] vs [Team B] confirmed lineup starting XI World Cup 2026", (C) "[Team A] vs [Team B] injuries suspended out World Cup 2026". Extract confirmed starting XI if announced (released ~1hr before kickoff), key absences, rotation risk.
+STEP 1 — Team A form + tactics: (A) "site:theanalyst.com [Team A] World Cup 2026", (B) "[Team A] World Cup 2026 results scorers tactics formation". Extract: last 2-3 match scores, goalscorers, key players in form, defensive record, tactical shape (formation, pressing, attacking patterns), suspensions.
+STEP 2 — Same two searches for Team B. Extract identical detail.
+STEP 3 — "[Team A] [Team B] World Cup 2026 standings what they need". Extract current points, what each team needs, 3rd place picture, rotation risk.
+STEP 4 — (A) "site:theanalyst.com [Team A] vs [Team B] 2026 preview", (B) "[Team A] vs [Team B] confirmed lineup injuries suspended World Cup 2026". Extract confirmed XI if announced (~1hr before kickoff), key absences, rotation risk.
 STEP 5 — Run run_statistical_model. The output includes win/draw/loss %, top_scorelines (raw ranked list), and recommended_scoreline (top scoreline within the most likely outcome). Use recommended_scoreline as a model reference point, but the final pick must reflect ALL steps — form, tactics, confirmed lineups, and context. If everything points to 1-1, predict 1-1.
 STEP 6 — Synthesise ALL steps into a verdict: predicted score, win/draw/loss % + recommended_scoreline from model, confidence (low/med/high), 1 alternative, key factor driving the pick, bold vs safe play.
 

@@ -43,33 +43,23 @@ intensity, set piece threat, player ratings, head-to-head records, and pre-match
 ━━━ MANDATORY PRE-MATCH ANALYSIS — DO THIS BEFORE EVERY PREDICTION ━━━
 You MUST run all of the following steps in order before giving any score prediction:
 
-STEP 1 — Team A's World Cup form, tactics + player stats
-  Search A: "site:theanalyst.com [Team A] World Cup 2026"  ← Opta match stats/preview
-  Search B: "[Team A] World Cup 2026 matches goals scorers results"  ← match-by-match results
-  Search C: "[Team A] World Cup 2026 tactics formation pressing how they play"  ← tactical shape
-  Extract ALL of the following:
-  - Last 2-3 WC 2026 matches: exact scores, who scored, which minute, how they conceded
-  - Key players in form: top scorers, assist makers, player driving attacks
-  - Defensive record: clean sheets, goals conceded, how vulnerable at the back
-  - Tactical patterns: formation used, pressing intensity, defensive shape, how they attack \
-(through wide areas, through the middle, set pieces), how they transition defence-to-attack
-  - Any red cards, suspensions, or key injuries from WC matches
+STEP 1 — Team A form + tactics
+  Search A: "site:theanalyst.com [Team A] World Cup 2026"
+  Search B: "[Team A] World Cup 2026 results scorers tactics formation"
+  Extract: last 2-3 match scores + who scored, key players in form, defensive record, \
+tactical shape (formation, pressing, attacking patterns, set pieces), suspensions/injuries.
 
-STEP 2 — Team B's World Cup form, tactics + player stats
-  Same three searches for Team B. Extract the same detail: match scores, goalscorers, \
-  key players in form, defensive record, suspensions, and tactical patterns.
+STEP 2 — Team B form + tactics
+  Same two searches for Team B. Extract identical detail.
 
 STEP 3 — Tournament context
-  Search: "[Group X] World Cup 2026 standings table"
-  Extract: current points, GD, what each team needs (must win / draw enough / already through / \
-already eliminated), whether 3rd place advancement is relevant and what points threshold is needed.
+  Search: "[Team A] [Team B] World Cup 2026 standings what they need"
+  Extract: points, what each team needs, 3rd place picture, rotation risk.
 
-STEP 4 — Confirmed lineups, injuries & Opta match preview
-  Search A: "site:theanalyst.com [Team A] vs [Team B] preview 2026"  ← Opta preview
-  Search B: "[Team A] vs [Team B] confirmed lineup starting XI World Cup 2026"  ← confirmed XI
-  Search C: "[Team A] vs [Team B] injuries suspended out World Cup 2026"  ← absences
-  Extract: confirmed starting XI if announced (lineups are released ~1hr before kickoff), \
-key absences, rotation risks (qualified teams rest starters), set piece threats.
+STEP 4 — Confirmed lineups & injuries
+  Search A: "site:theanalyst.com [Team A] vs [Team B] 2026 preview"
+  Search B: "[Team A] vs [Team B] confirmed lineup injuries suspended World Cup 2026"
+  Extract: confirmed starting XI (~1hr before kickoff), key absences, rotation risk, set piece threats.
 
 STEP 5 — Statistical model
   Run run_statistical_model. The output includes:
@@ -242,7 +232,7 @@ def search_web(query: str) -> str:
     print(f"  [Searching: {query}]")
     try:
         with DDGS() as ddgs:
-            results = list(ddgs.text(query, max_results=4))
+            results = list(ddgs.text(query, max_results=3))
         if not results:
             return "No results found."
         parts = []
