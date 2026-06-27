@@ -101,14 +101,14 @@ def search_web(query: str) -> str:
     try:
         r = requests.post(
             "https://api.tavily.com/search",
-            json={"api_key": TAVILY_API_KEY, "query": query, "max_results": 6, "search_depth": "basic"},
+            json={"api_key": TAVILY_API_KEY, "query": query, "max_results": 4, "search_depth": "basic"},
             timeout=20,
         )
         data = r.json()
         results = data.get("results", [])
         if not results:
             return "No results found."
-        return "\n\n".join(f"{r.get('title','')}\n{r.get('content','')}" for r in results)
+        return "\n\n".join(f"{r.get('title','')}\n{r.get('content','')[:400]}" for r in results)
     except Exception as e:
         return f"Search error: {e}"
 
@@ -228,7 +228,10 @@ def run_agent_sync(user_message: str, history: list) -> str:
             history.append({"role": "user", "content": tool_results})
         else:
             reply = "".join(b.text for b in response.content if hasattr(b, "text"))
-            history.append({"role": "assistant", "content": response.content})
+            # Keep only last Q&A for follow-up context, strip all tool call history
+            history.clear()
+            history.append({"role": "user", "content": user_message})
+            history.append({"role": "assistant", "content": reply})
             return reply
 
 # ── Auth helpers ───────────────────────────────────────────────────────────────
